@@ -1,11 +1,12 @@
-import pyOperator
-import pyVector
-import giee
+from genericSolver.pyOperator import Operator as operator
+from genericSolver.pyVector  import vector
+from numba import jit, int32, float32
 import numpy as np
-from numba import jit
 
 
-class triangle(pyOperator.Operator):
+
+
+class triangle(operator):
     """
        Smooth with a triangle
 
@@ -20,11 +21,11 @@ class triangle(pyOperator.Operator):
 
              Both must be the same space,  derived from pyVector.vectorIC"""
 
-        if not isinstance(model, pyVector.vector):
+        if not isinstance(model, vector):
             raise Exception(
                 "Model must be giee.vector or derived from it")
 
-        if not isinstance(data, pyVector.vector):
+        if not isinstance(data, vector):
             raise Exception(
                 "Model must be giee.vector or derived from it")
 
@@ -71,7 +72,7 @@ class triangle1D(triangle):
 
         if not add:
             data.zero()
-        forward1D(model.getNdArray(), data.getNdArray(),self.filt)
+        forward1D(model.get_nd_array(), data.get_nd_array(),self.filt)
 
     def adjoint(self, add, model, data):
         """Apply the adjoint
@@ -82,7 +83,7 @@ class triangle1D(triangle):
 
         if not add:
             model.zero()
-        adjoint1D(model.getNdArray(), data.getNdArray(),self.filt)
+        adjoint1D(model.get_nd_array(), data.get_nd_array(),self.filt)
 
 
 
@@ -114,7 +115,7 @@ class triangle2D_1(triangle):
 
         if not add:
             data.zero()
-        forward2D_1(model.getNdArray(), data.getNdArray(),self.filt)
+        forward2D_1(model.get_nd_array(), data.get_nd_array(),self.filt)
 
     def adjoint(self, add, model, data):
         """Apply the adjoint
@@ -125,7 +126,7 @@ class triangle2D_1(triangle):
 
         if not add:
             model.zero()
-        adjoint2D_1(model.getNdArray(), data.getNdArray(),self.filt)
+        adjoint2D_1(model.get_nd_array(), data.get_nd_array(),self.filt)
 
 
 class triangle2D_2(triangle):
@@ -156,7 +157,7 @@ class triangle2D_2(triangle):
 
         if not add:
             data.zero()
-        forward2D_2(model.getNdArray(), data.getNdArray(),self.filt)
+        forward2D_2(model.get_nd_array(), data.get_nd_array(),self.filt)
 
     def adjoint(self, add, model, data):
         """Apply the adjoint
@@ -167,7 +168,7 @@ class triangle2D_2(triangle):
 
         if not add:
             model.zero()
-        adjoint2D_2(model.getNdArray(), data.getNdArray(),self.filt)
+        adjoint2D_2(model.get_nd_array(), data.get_nd_array(),self.filt)
 
 
 @jit(nopython=True)
