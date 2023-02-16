@@ -1,9 +1,13 @@
-import pyOperator
-import giee
+from genericSolver.pyOperator import Operator as operator
+from genericSolver.pyVector  import vector
+from sep_python.hypercube import Hypercube, Axis
+import sep_python.modes    #Import SEP python module
+io=sep_python.modes.default_io  #Get default IO that expects SEPlib datasets and uses sepVectors
+
 from numba import jit
 
 
-class identity(pyOperator.Operator):
+class identity(operator):
     """
     Identity operator
     """
@@ -18,11 +22,11 @@ class identity(pyOperator.Operator):
         Both must be the same dimension,  derived from pyVector.vectorIC
         """
 
-        if not isinstance(model, giee.vector):
+        if not isinstance(model, vector):
             raise Exception(
-                "Model must be giee.vector or derived from it")
+                "Model must be vector or derived from it")
 
-        if not isinstance(data, giee.vector):
+        if not isinstance(data, vector):
             raise Exception(
                 "Model must be pyVector.vectorIC or derived from it")
 

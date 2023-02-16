@@ -1,9 +1,13 @@
-import pyOperator
-import giee
+from genericSolver.pyOperator import Operator as operator
+from genericSolver.pyVector  import vector
+from sep_python.hypercube import Hypercube, Axis
+import sep_python.modes    #Import SEP python module
+io=sep_python.modes.default_io  #Get default IO that expects SEPlib datasets and uses sepVectors
+
 from numba import jit
 
 
-class igrad(pyOperator.Operator):
+class igrad(operator):
     """Operator that does causal integration
 
        b_i=a_i-a_{i-1} in all directions
@@ -18,13 +22,13 @@ class igrad(pyOperator.Operator):
 
              Both must be the same space,  derived from pyVector.vectorIC"""
 
-        if not isinstance(model, giee.vector):
+        if not isinstance(model, vector):
             raise Exception(
-                "Model must be giee.vector or derived from it")
+                "Model must be vector or derived from it")
 
-        if not isinstance(data, giee.vector):
+        if not isinstance(data, vector):
             raise Exception(
-                "Model must be giee.vector or derived from it")
+                "Model must be vector or derived from it")
 
 
 class igrad1(igrad):
@@ -89,15 +93,15 @@ class igrad2(igrad):
         super().__init__(model, data)
         if model.ndims != 2:
             raise Exception("Expecting a 2-D array")
-        if model.getHyper().getAxis(1).n != data.getHyper().getAxis(1).n:
+        if model.get_hyper().get_axis(1).n != data.get_hyper().get_axis(1).n:
             raise Exception("Fast axis of model and data don't match")
-        if model.getHyper().getAxis(2).n != data.getHyper().getAxis(2).n:
+        if model.get_hyper().get_axis(2).n != data.get_hyper().get_axis(2).n:
             raise Exeption(
                 "Second axis data and first axis of model not sane size")
-        if data.getHyper().getAxis(3).n != 2:
+        if data.get_hyper().get_axis(3).n != 2:
             raise Exception(
                 "Model slowest dimension must be size 2 =",
-                data.getHyper().getAxis(3).n)
+                data.get_hyper().get_axis(3).n)
         self.setDomainRange(model, data)
 
     def forward(self, add, model, data):
