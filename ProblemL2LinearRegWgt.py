@@ -1,7 +1,7 @@
-from pyProblem import Problem
-import pyVector as pyVec
-import pyOperator as pyOp
+from genericSolver.pyProblem import Problem
 from math import isnan
+from genericSolver.pyOperator import Operator as operator
+from genericSolver.pyVector  import vector
 
 #TODO: if you desire to create a new problem class for the weighted optimization,
 #      you will need to modify this file (Hint: if you want to do the least amount of work, only
@@ -42,7 +42,7 @@ class ProblemL2LinearRegWgt(Problem):
         # Setting linear operators
         # Assuming identity operator if regularization operator was not provided
         if reg_op is None:
-            reg_op = pyOp.IdentityOp(self.model)
+            reg_op = operator.IdentityOp(self.model)
         # Checking if space of the prior model is constistent with range of
         # regularization operator
         if self.prior_model is not None:
