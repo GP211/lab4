@@ -1,8 +1,13 @@
 import numpy as np
 import math
-import giee
-import Hypercube
 from Triangle import triangle2D_1
+
+from sep_plot import Grey
+from sep_python.hypercube import Hypercube, Axis
+import sep_python.modes    #Import SEP python module
+io=sep_python.modes.default_io  #Get default IO that expects SEPlib datasets and uses sepVectors
+
+
 
 def mute(t,x,tp=0.15,slope0=1/1.45,slopep=1/1.45):
     """ 
@@ -81,19 +86,20 @@ def picker(s0,a,b,error,envIn):
       amp   - the amplitudes of the picked slownesses (nt)
     """
     envV=envIn.clone()
-    axis1 = envV.getHyper().getAxis(1);
-    axis2 = envV.getHyper().getAxis(2);
+    axis1 = envV.get_hyper().get_axis(1);
+    axis2 = envV.get_hyper().get_axis(2);
     n1 = axis1.n; o1 = axis1.o; d1 = axis1.d
     n2 = axis2.n; o2 = axis2.o; d2 = axis2.d
     #Create a 1-D vector of picked RMS
-    slowV = giee.vector(Hypercube.hypercube(ns=[n1], ds=[d1],os=[o1]))
+    slowV = io.get_reg_vector(Hypercube.set_with_ns(ns=[n1], ds=[d1],os=[o1]))
+    
     #numpy view into arrays
-    env=envV.getNdArray()
-    rms=slowV.getNdArray()
+    env=envV.get_nd_array()
+    rms=slowV.get_nd_array()
     #amp
     ampV=slowV.clone()
     ampV.scale(0.)
-    amp=ampV.getNdArray()
+    amp=ampV.get_nd_array()
     tm=[]
     for it in range(n1):
         t=o1+d1*it
