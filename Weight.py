@@ -1,9 +1,9 @@
-import pyOperator
-import giee
+from genericSolver.pyOperator import Operator as operator
+from genericSolver.pyVector  import vector
 from numba import jit
 
 
-class weight(pyOperator.Operator):
+class weight(operator):
     """Operator
           d= W *m  -Where W is a diagonal matrix
 
@@ -16,19 +16,19 @@ class weight(pyOperator.Operator):
              model - Model space
              data  - Data space
 
-             Both must be the same space,  derived from giee.vector"""
+             Both must be the same space,  derived from vector"""
 
-        if not isinstance(model, giee.vector):
+        if not isinstance(model, vector):
             raise Exception(
-                "Model must be giee.vector or derived from it")
+                "Model must bevector or derived from it")
 
-        if not isinstance(data, giee.vector):
+        if not isinstance(data, vector):
             raise Exception(
-                "Model must be giee.vector or derived from it")
+                "Model must be vector or derived from it")
 
-        if not isinstance(w, giee.vector):
+        if not isinstance(w, vector):
             raise Exception(
-                "Weight must be giee.vector or derived from it")
+                "Weight must be vector or derived from it")
 
         if not model.checkSame(data):
             raise Exception("Model and data must be the same space")
